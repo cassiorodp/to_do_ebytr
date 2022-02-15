@@ -2,7 +2,7 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
 // Importar o MongoClient e o mock da conexão
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 const {
   describe, before, after, it,
 } = require('mocha');
@@ -13,24 +13,19 @@ const toDoModel = require('../../models/toDo');
 
 describe('Atualiza uma tarefa', () => {
   let connectionMock;
+  let taskId;
 
   const payloadToDo = {
     status: 'pendente',
     task: 'Fazer os testes',
   };
 
-  const updateStatusPayloadToDo = {
-    status: 'em andamento',
-  };
-
-  const updateTaskPayloadToDo = {
-    task: 'Fazendo os testes',
-  };
-
   // Aqui atualizamos o código para usar o banco montado pela lib `mongo-memory-server`
   before(async () => {
     connectionMock = await getConnection();
     sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+    const { insertedId } = await connectionMock.db('tasks').collection('to_do').insertOne(payloadToDo);
+    taskId = insertedId;
   });
 
   // Restauraremos a função `connect` original após os testes.
@@ -39,21 +34,23 @@ describe('Atualiza uma tarefa', () => {
     MongoClient.connect.restore();
   });
 
-  describe('Quando é criado a tarefa com sucesso', () => {
-    it('retorna um objeto', async () => {
-      const response = await toDoModel.create(payloadToDo);
-
-      expect(response).to.be.an('object');
-    });
+  describe('Quando é atualizado com sucesso', () => {
     // Testando se o usuário foi cadastrado após chamar a função `create`.
-    it('deve existir uma tarefa cadastrada!', async () => {
-      const taskId = await toDoModel.create(payloadToDo);
-      const task = await connectionMock
+    it('deve retornar uma tarefa atualizada!', async () => {
+      const updateStatusPayloadToDo = {
+        id: taskId,
+        status: 'em andamento',
+      };
+
+      await toDoModel.update(updateStatusPayloadToDo);
+
+      const [updatedTask] = await connectionMock
         .db('tasks')
         .collection('to_do')
-        .find({ _id: ObjectId(taskId) });
+        .find({ _id: taskId })
+        .toArray();
 
-      expect(task).to.not.be.null;
+      expect(updatedTask.status).to.be.equal('em andamento');
     });
   });
 });

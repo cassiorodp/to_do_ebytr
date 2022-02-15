@@ -8,6 +8,15 @@ const getAll = async () => {
   return tasks;
 };
 
+const create = async ({ task, status }) => {
+  const conn = await connect();
+
+  const { insertedId } = await conn.collection('to_do').insertOne({ task, status });
+
+  return insertedId;
+};
+
 module.exports = {
   getAll,
+  create,
 };

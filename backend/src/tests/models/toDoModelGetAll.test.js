@@ -10,7 +10,7 @@ const { getConnection } = require('./mongoMockConnection');
 // Importar o model a ser testado
 const toDoModel = require('../../models/toDo');
 
-describe('Cria um novo usuário', () => {
+describe('Retorna uma lista de tarefas', () => {
   let connectionMock;
 
   const payloadToDo = {

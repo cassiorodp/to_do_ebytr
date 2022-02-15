@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./src/tests/**/*$NAME*.test.js --exit"
+    "test": "mocha ./src/tests/**/*$NAME*.test.js --exit",
+    "test:coverage": "nyc --include='src/**/*.js' npm run test"
   },
   "keywords": [],
   "author": "",

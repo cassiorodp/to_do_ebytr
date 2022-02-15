@@ -35,7 +35,6 @@ describe('Atualiza uma tarefa', () => {
   });
 
   describe('Quando é atualizado com sucesso', () => {
-    // Testando se o usuário foi cadastrado após chamar a função `create`.
     it('deve retornar uma tarefa atualizada!', async () => {
       const updateStatusPayloadToDo = {
         id: taskId,

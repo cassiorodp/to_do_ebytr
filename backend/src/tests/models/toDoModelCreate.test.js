@@ -37,7 +37,6 @@ describe('Cria uma nova tarefa', () => {
 
       expect(response).to.be.an('object');
     });
-    // Testando se o usuário foi cadastrado após chamar a função `create`.
     it('deve existir uma tarefa cadastrada!', async () => {
       const taskId = await toDoModel.create(payloadToDo);
       const task = await connectionMock

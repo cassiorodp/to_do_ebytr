@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 const sinon = require('sinon');
 const { expect } = require('chai');
 // Importar o MongoClient e o mock da conexão
@@ -10,8 +11,9 @@ const { getConnection } = require('./mongoMockConnection');
 // Importar o model a ser testado
 const toDoModel = require('../../models/toDo');
 
-describe('Retorna uma lista de tarefas', () => {
+describe('Atualiza uma tarefa', () => {
   let connectionMock;
+  let taskId;
 
   const payloadToDo = {
     status: 'pendente',
@@ -22,7 +24,8 @@ describe('Retorna uma lista de tarefas', () => {
   before(async () => {
     connectionMock = await getConnection();
     sinon.stub(MongoClient, 'connect').resolves(connectionMock);
-    await connectionMock.db('tasks').collection('to_do').insertOne(payloadToDo);
+    const { insertedId } = await connectionMock.db('tasks').collection('to_do').insertOne(payloadToDo);
+    taskId = insertedId;
   });
 
   // Restauraremos a função `connect` original após os testes.
@@ -31,16 +34,22 @@ describe('Retorna uma lista de tarefas', () => {
     MongoClient.connect.restore();
   });
 
-  describe('Quando é retornado as tarefas com sucesso', () => {
-    it('retorna um array', async () => {
-      const response = await toDoModel.getAll();
+  describe('Quando é deletado com sucesso', () => {
+    it('deve retornar uma tarefa atualizada!', async () => {
+      const updateStatusPayloadToDo = {
+        id: taskId,
+        status: 'em andamento',
+      };
 
-      expect(response).to.be.an('array');
-    });
-    it('deve existir uma tarefa cadastrada!', async () => {
-      const tasks = await toDoModel.getAll();
+      await toDoModel.update(updateStatusPayloadToDo);
 
-      expect(tasks[0].status).to.be.equal('nova');
+      const [updatedTask] = await connectionMock
+        .db('tasks')
+        .collection('to_do')
+        .find({ _id: taskId })
+        .toArray();
+
+      expect(updatedTask.status).to.be.equal('em andamento');
     });
   });
 });

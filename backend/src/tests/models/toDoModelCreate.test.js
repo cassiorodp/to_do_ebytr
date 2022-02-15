@@ -42,7 +42,7 @@ describe('Cria uma nova tarefa', () => {
       const task = await connectionMock
         .db('tasks')
         .collection('to_do')
-        .find({ _id: ObjectId(taskId) });
+        .findOne({ _id: ObjectId(taskId) });
 
       expect(task).to.not.be.null;
     });

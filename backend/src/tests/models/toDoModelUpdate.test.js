@@ -43,11 +43,10 @@ describe('Atualiza uma tarefa', () => {
 
       await toDoModel.update(updateStatusPayloadToDo);
 
-      const [updatedTask] = await connectionMock
+      const updatedTask = await connectionMock
         .db('tasks')
         .collection('to_do')
-        .find({ _id: taskId })
-        .toArray();
+        .findOne({ _id: taskId });
 
       expect(updatedTask.status).to.be.equal('em andamento');
     });

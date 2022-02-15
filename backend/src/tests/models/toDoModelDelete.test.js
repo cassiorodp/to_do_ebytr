@@ -35,21 +35,15 @@ describe('Atualiza uma tarefa', () => {
   });
 
   describe('Quando é deletado com sucesso', () => {
-    it('deve retornar uma tarefa atualizada!', async () => {
-      const updateStatusPayloadToDo = {
-        id: taskId,
-        status: 'em andamento',
-      };
+    it('deve deletar a tarefa do banco de dados!', async () => {
+      await toDoModel.deleteTask({ id: taskId });
 
-      await toDoModel.update(updateStatusPayloadToDo);
-
-      const [updatedTask] = await connectionMock
+      const deletedTask = await connectionMock
         .db('tasks')
         .collection('to_do')
-        .find({ _id: taskId })
-        .toArray();
+        .findOne({ _id: taskId });
 
-      expect(updatedTask.status).to.be.equal('em andamento');
+      expect(deletedTask).to.be.equal(null);
     });
   });
 });

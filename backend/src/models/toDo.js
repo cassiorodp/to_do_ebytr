@@ -26,8 +26,15 @@ const update = async ({ id, status }) => {
   );
 };
 
+const deleteTask = async ({ id }) => {
+  const conn = await connect();
+
+  await conn.collection('to_do').deleteOne({ _id: ObjectId(id) });
+};
+
 module.exports = {
   getAll,
   create,
   update,
+  deleteTask,
 };

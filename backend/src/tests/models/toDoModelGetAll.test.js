@@ -14,7 +14,7 @@ describe('Retorna uma lista de tarefas', () => {
   let connectionMock;
 
   const payloadToDo = {
-    status: 'nova',
+    status: 'pendente',
     task: 'Fazer os testes',
   };
 

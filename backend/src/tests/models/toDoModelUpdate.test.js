@@ -11,12 +11,20 @@ const { getConnection } = require('./mongoMockConnection');
 // Importar o model a ser testado
 const toDoModel = require('../../models/toDo');
 
-describe('Cria uma nova tarefa', () => {
+describe('Atualiza uma tarefa', () => {
   let connectionMock;
 
   const payloadToDo = {
     status: 'pendente',
     task: 'Fazer os testes',
+  };
+
+  const updateStatusPayloadToDo = {
+    status: 'em andamento',
+  };
+
+  const updateTaskPayloadToDo = {
+    task: 'Fazendo os testes',
   };
 
   // Aqui atualizamos o código para usar o banco montado pela lib `mongo-memory-server`

@@ -27,6 +27,23 @@ const create = async ({ status, task }) => {
   };
 };
 
+const getAll = async () => {
+  const tasks = await toDoModel.getAll();
+
+  return tasks;
+};
+
+const update = async ({ id, status }) => {
+  await toDoModel.update({ id, status });
+};
+
+const deleteTask = async ({ id }) => {
+  await toDoModel.deleteTask({ id });
+};
+
 module.exports = {
   create,
+  getAll,
+  update,
+  deleteTask,
 };

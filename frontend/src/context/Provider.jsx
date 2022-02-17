@@ -15,7 +15,7 @@ export default function Provider({ children }) {
   const context = useMemo(() => ({
     tasks,
     createTask,
-  }), []);
+  }), [tasks]);
 
   return (
     <appContext.Provider value={context}>

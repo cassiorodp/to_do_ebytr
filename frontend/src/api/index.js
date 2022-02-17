@@ -5,7 +5,7 @@ const BASE_URL = 'http://localhost:3001';
 export const getTasks = async () => {
   const tasks = await axios(`${BASE_URL}/tasks`);
 
-  return tasks;
+  return tasks.data;
 };
 
 export const createTask = async ({ status, task, createdAt }) => {

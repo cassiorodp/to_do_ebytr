@@ -7,12 +7,12 @@ const errorConstructor = require('../utils/errorConstructor');
 const toDoSchema = Joi.object({
   task: Joi.string().empty('').required(),
   status: Joi.string().empty('').required(),
-  createdAt: Joi.date().timestamp('javascript').required(),
+  // createdAt: Joi.date().timestamp('javascript').required(),
 });
 
 const create = async ({ status, task, createdAt }) => {
   const { error } = toDoSchema.validate({
-    status, task, createdAt,
+    status, task,
   });
 
   // validar entradas incorretas

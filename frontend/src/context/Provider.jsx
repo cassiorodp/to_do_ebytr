@@ -6,11 +6,14 @@ import { createTask, getTasks } from '../api';
 export default function Provider({ children }) {
   const [tasks, setTasks] = useState([]);
 
-  useEffect(async () => {
-    const response = await getTasks();
+  useEffect(() => {
+    const getAllTasks = async () => {
+      const response = await getTasks();
+      setTasks(response);
+    };
 
-    setTasks(response);
-  }, [createTask]);
+    getAllTasks();
+  });
 
   const context = useMemo(() => ({
     tasks,

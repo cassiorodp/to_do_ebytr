@@ -9,10 +9,10 @@ const getAll = async () => {
   return tasks;
 };
 
-const create = async ({ task, status }) => {
+const create = async ({ task, status, createdAt }) => {
   const conn = await connect();
 
-  const { insertedId } = await conn.collection('to_do').insertOne({ task, status });
+  const { insertedId } = await conn.collection('to_do').insertOne({ task, status, createdAt });
 
   return insertedId;
 };

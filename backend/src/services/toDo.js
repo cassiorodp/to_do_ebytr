@@ -7,18 +7,19 @@ const errorConstructor = require('../utils/errorConstructor');
 const toDoSchema = Joi.object({
   task: Joi.string().empty('').required(),
   status: Joi.string().empty('').required(),
+  createdAt: Joi.date().timestamp('javascript').required(),
 });
 
-const create = async ({ status, task }) => {
+const create = async ({ status, task, createdAt }) => {
   const { error } = toDoSchema.validate({
-    status, task,
+    status, task, createdAt,
   });
 
   // validar entradas incorretas
   if (error) throw errorConstructor(badRequest, error.message);
 
   // inserir tarefa
-  const taskId = await toDoModel.create({ task, status });
+  const taskId = await toDoModel.create({ task, status, createdAt });
 
   return {
     _id: taskId,
